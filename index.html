@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mensora | Tailored Menswear</title>
+<meta name="description" content="Mensora: tailored suits, linen shirts, outerwear and accessories for men. Build your look, find your size, book a fitting. A concept demo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Brief: Mensora, a fictional premium menswear label: tailoring, linen, outerwear, accessories. Calm, precise, grown-up.
+   Idea: the tape measure. A tailor's tape runs down the page edge and measures you as you scroll; the same tape opens the site.
+   Signature moment: pick Office, Evening or Weekend and the whole page re-dresses (photo, tint, pieces, price). */
+:root{
+  --ink:#0d141f; --navy:#14202f; --navy2:#1c2b3f; --sand:#e8dfd0; --bone:#f6f2ea; --brass:#b8935a; --brass-l:#d8b883; --mute:#7c8493;
+  --disp:'Bodoni Moda',Georgia,serif; --sans:'Archivo',system-ui,sans-serif; --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);font-weight:300;background:var(--bone);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{width:min(1220px,100% - 48px);margin:0 auto}
+.lab{font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:var(--brass);font-weight:500}
+.lab b{opacity:.6;margin-right:.8em;font-weight:500}
+h1,h2,h3{font-family:var(--disp);font-weight:400;line-height:1.02;letter-spacing:-.015em}
+h2{font-size:clamp(2.2rem,5vw,4.2rem)}
+h1 em,h2 em{font-style:italic;color:var(--brass)}
+.btn{display:inline-flex;align-items:center;gap:.7em;padding:1em 1.8em;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;text-decoration:none;border:1px solid transparent;transition:transform .3s var(--ease),background .3s,color .3s,border-color .3s}
+.btn-d{background:var(--ink);color:var(--bone)}.btn-d:hover{background:var(--brass);color:var(--ink);transform:translateY(-2px)}
+.btn-b{background:var(--brass);color:var(--ink)}.btn-b:hover{background:var(--brass-l);transform:translateY(-2px)}
+.btn-o{border-color:currentColor}.btn-o:hover{background:rgba(127,127,127,.15);transform:translateY(-2px)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* loader: tape */
+#loader{position:fixed;inset:0;z-index:300;background:var(--ink);display:grid;place-items:center;transition:opacity .8s .1s,visibility .8s .1s}
+#loader.off{opacity:0;visibility:hidden}
+.lt{width:min(70vw,560px);text-align:center}
+.lt .tp{height:30px;border-top:1px solid var(--brass);position:relative;background:repeating-linear-gradient(90deg,var(--brass) 0 1px,transparent 1px 12px);background-size:100% 10px;background-repeat:repeat-x;clip-path:inset(0 100% 0 0);animation:tp 1.5s .2s var(--ease) forwards}
+@keyframes tp{to{clip-path:inset(0 0 0 0)}}
+.lt h1{font-size:clamp(2.6rem,9vw,5.4rem);letter-spacing:.28em;color:var(--bone);margin-top:20px;opacity:0;animation:fi 1s 1s forwards;padding-left:.28em}
+@keyframes fi{to{opacity:1}}
+#skip{position:absolute;right:22px;bottom:22px;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bone);opacity:.55}
+
+/* side tape */
+.side{position:fixed;left:12px;top:88px;bottom:88px;width:44px;z-index:45;pointer-events:none;mix-blend-mode:difference;color:#fff}
+.side .rule{position:absolute;left:0;top:0;bottom:0;width:20px;background:repeating-linear-gradient(to bottom,#fff 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,#fff 0 1px,transparent 1px 40px);background-size:10px 100%,20px 100%;background-repeat:repeat-y;opacity:.85}
+.side .mk{position:absolute;left:0;width:100%;height:0;transition:top .15s linear}
+.side .mk i{position:absolute;left:0;top:-1px;width:34px;border-top:2px solid #fff}
+.side .mk span{position:absolute;left:40px;top:-8px;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;font-weight:500}
+
+nav{position:fixed;inset:0 0 auto 0;z-index:50;padding:18px 0;transition:background .4s,padding .4s,color .4s}
+nav.s{background:rgba(246,242,234,.9);backdrop-filter:blur(12px);padding:11px 0;box-shadow:0 1px 0 rgba(13,20,31,.08)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-left:34px}
+.logo{font-family:var(--disp);font-size:1.5rem;letter-spacing:.26em;text-decoration:none;text-transform:uppercase;font-weight:500}
+nav ul{display:flex;gap:30px;list-style:none;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
+nav ul a{text-decoration:none;opacity:.75}nav ul a:hover{opacity:1;color:var(--brass)}
+.bag{display:inline-flex;align-items:center;gap:.6em;padding:.7em 1.3em;border:1px solid currentColor;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;transition:.3s}
+.bag:hover{background:var(--ink);color:var(--bone)}
+.bag b{display:inline-grid;place-items:center;min-width:1.7em;height:1.7em;border-radius:50%;background:var(--brass);color:var(--ink);font-weight:600;font-size:.75rem}
+
+/* hero */
+.hero{position:relative;padding:116px 0 70px;background:var(--bone);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;min-height:calc(100svh - 190px);padding-left:34px}
+.hero h1{font-size:clamp(3.2rem,8vw,7.4rem);line-height:.96}
+.hero .sub{max-width:30em;margin:26px 0 34px;font-size:1.05rem;color:#4a5262}
+.hero .row{display:flex;gap:12px;flex-wrap:wrap}
+.meta{display:flex;flex-wrap:wrap;gap:10px 34px;margin-top:40px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:500}
+.meta b{display:block;font-family:var(--disp);font-size:1.9rem;letter-spacing:0;text-transform:none;color:var(--ink);font-weight:400;line-height:1.1}
+.hph{position:relative;aspect-ratio:3/4}
+.hph .a{position:absolute;inset:0 0 0 12%;overflow:hidden}
+.hph .a img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;transform:scale(1.08);animation:zoom 14s var(--ease) forwards}
+@keyframes zoom{to{transform:scale(1)}}
+.hph .b{position:absolute;left:0;bottom:-6%;width:38%;aspect-ratio:3/4;border:8px solid var(--bone);overflow:hidden;box-shadow:0 30px 50px -24px rgba(13,20,31,.6)}
+.hph .b img{width:100%;height:100%;object-fit:cover}
+.hph .tag{position:absolute;right:-8px;top:8%;background:var(--ink);color:var(--bone);padding:.7em 1.2em;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;writing-mode:vertical-rl;font-weight:500}
+
+.mq{padding:18px 0;background:var(--ink);color:var(--sand);overflow:hidden;white-space:nowrap}
+.mq div{display:inline-block;animation:mq 42s linear infinite;font-family:var(--disp);font-style:italic;font-size:clamp(1.2rem,2.6vw,1.9rem)}
+.mq span{margin:0 .9em}.mq i{font-style:normal;color:var(--brass)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+.sec{padding:110px 0}
+
+/* wardrobe */
+.ward{background:var(--wbg,#14202f);color:var(--wink,#f6f2ea);transition:background 1s,color 1s;position:relative;overflow:hidden}
+.ward[data-o="0"]{--wbg:#14202f;--wink:#f6f2ea}
+.ward[data-o="1"]{--wbg:#0a0d12;--wink:#f6f2ea}
+.ward[data-o="2"]{--wbg:#e8dfd0;--wink:#0d141f}
+.ward .lab{color:var(--brass-l)}.ward[data-o="2"] .lab{color:#8a6a35}
+.ward h2 em{color:var(--brass-l)}.ward[data-o="2"] h2 em{color:#8a6a35}
+.wg{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;margin-top:44px;padding-left:34px}
+.tabs{display:flex;gap:8px;margin:30px 0 26px;flex-wrap:wrap}
+.tabs button{padding:.8em 1.5em;border:1px solid currentColor;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;opacity:.6;transition:.3s}
+.tabs button:hover{opacity:1}
+.tabs button[aria-pressed=true]{background:var(--brass);border-color:var(--brass);color:#0d141f;opacity:1}
+.wcopy h3{font-size:clamp(1.8rem,3.4vw,2.7rem);margin-bottom:8px}
+.wcopy>p{max-width:28em;opacity:.8;min-height:3.4em}
+.pcs{list-style:none;margin:22px 0;border-top:1px solid rgba(127,127,127,.35)}
+.pcs li{display:grid;grid-template-columns:30px 1fr auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(127,127,127,.35);cursor:pointer}
+.pcs input{appearance:none;width:20px;height:20px;border:1.5px solid currentColor;border-radius:0;cursor:pointer;position:relative;transition:.25s;opacity:.7}
+.pcs input:checked{background:var(--brass);border-color:var(--brass);opacity:1}
+.pcs input:checked::after{content:"";position:absolute;left:5px;top:1px;width:6px;height:11px;border:solid #0d141f;border-width:0 2px 2px 0;transform:rotate(40deg)}
+.pcs b{font-family:var(--disp);font-weight:400;font-size:1.3rem;display:block;line-height:1.2}
+.pcs small{font-size:.76rem;opacity:.65;letter-spacing:.04em}
+.pcs .pr{font-family:var(--disp);font-size:1.2rem}
+.tot{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin:6px 0 24px}
+.tot span{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;opacity:.7}
+.tot b{font-family:var(--disp);font-weight:400;font-size:2.4rem}
+.wrow{display:flex;gap:12px;flex-wrap:wrap}
+.wph{position:relative;aspect-ratio:4/5}
+.wph .im{position:absolute;inset:0;overflow:hidden;box-shadow:0 40px 70px -30px rgba(0,0,0,.7)}
+.wph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1s,transform 1.6s var(--ease)}
+.wph img.on{opacity:1;transform:none}
+.wph .sm{position:absolute;right:-6%;bottom:-5%;width:34%;aspect-ratio:3/4;border:7px solid var(--wbg);overflow:hidden;transition:border-color 1s;box-shadow:0 20px 40px -20px #000}
+.wph .sm img{opacity:0}.wph .sm img.on{opacity:1}
+.note{font-size:.74rem;opacity:.6;margin-top:16px}
+
+/* edit */
+.edit{background:var(--bone)}
+.eh{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:44px;padding-left:34px}
+.eh p{max-width:26em;color:#4a5262}
+.rail{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 24px 30px 58px;scrollbar-width:thin}
+.pc{flex:0 0 min(310px,76vw);scroll-snap-align:start}
+.pc .im{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--sand)}
+.pc .im img{width:100%;height:100%;object-fit:cover;transition:transform 1.3s var(--ease)}
+.pc:hover .im img{transform:scale(1.06)}
+.pc .q{position:absolute;left:12px;right:12px;bottom:12px;padding:.9em;background:rgba(246,242,234,.95);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;text-align:center;transform:translateY(120%);transition:transform .5s var(--ease)}
+.pc:hover .q,.pc .q:focus-visible{transform:none}
+.pc .q:hover{background:var(--ink);color:var(--bone)}
+.pc h3{font-size:1.4rem;margin-top:14px}
+.pc p{font-size:.84rem;color:var(--mute);display:flex;justify-content:space-between}
+.pc p b{font-weight:500;color:var(--ink)}
+.pc .sz{display:flex;gap:6px;margin-top:8px}
+.pc .sz span{font-size:.66rem;letter-spacing:.1em;padding:.2em .55em;border:1px solid rgba(13,20,31,.25)}
+
+/* fit */
+.fit{background:var(--sand)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding-left:34px}
+.sl{margin:26px 0}
+.sl label{display:flex;justify-content:space-between;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.sl label b{font-family:var(--disp);font-weight:400;font-size:1.4rem;letter-spacing:0;text-transform:none}
+.sl input{width:100%;accent-color:var(--ink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.chips button{padding:.65em 1.2em;border:1px solid rgba(13,20,31,.35);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;transition:.3s}
+.chips button[aria-pressed=true]{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.res{background:var(--ink);color:var(--bone);padding:40px;text-align:center;position:relative}
+.res small{display:block;font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;color:var(--brass-l);font-weight:500}
+.res .sz{font-family:var(--disp);font-size:clamp(5rem,12vw,9rem);line-height:1;margin:10px 0;color:#fff}
+.res .bar{display:flex;margin:18px 0 10px;height:34px;border:1px solid rgba(255,255,255,.3)}
+.res .bar i{flex:1;border-right:1px solid rgba(255,255,255,.18);display:grid;place-items:center;font-style:normal;font-size:.7rem;letter-spacing:.1em;opacity:.55;transition:.4s}
+.res .bar i:last-child{border:0}
+.res .bar i.on{background:var(--brass);color:var(--ink);opacity:1;font-weight:600}
+.res p{font-size:.84rem;opacity:.75;margin-bottom:22px}
+
+/* details */
+.det{background:var(--bone)}
+.dg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.dg figure{position:relative;aspect-ratio:3/4;overflow:hidden}
+.dg figure:nth-child(even){margin-top:46px}
+.dg img{width:100%;height:100%;object-fit:cover;transition:transform 1.3s var(--ease)}
+.dg figure:hover img{transform:scale(1.07)}
+.dg figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;background:linear-gradient(transparent,rgba(13,20,31,.8));color:#fff;font-family:var(--disp);font-style:italic;font-size:1.2rem}
+
+/* promise */
+.prom{background:var(--navy);color:var(--bone)}
+.prom .lab{color:var(--brass-l)}.prom h2 em{color:var(--brass-l)}
+.pg{display:grid;grid-template-columns:repeat(4,1fr);margin-top:50px;border-top:1px solid rgba(246,242,234,.2)}
+.pg div{padding:30px 26px 10px 0;border-right:1px solid rgba(246,242,234,.14);padding-left:26px}
+.pg div:first-child{padding-left:0}.pg div:last-child{border:0}
+.pg .n{font-family:var(--disp);font-style:italic;color:var(--brass-l);font-size:1.2rem}
+.pg b{display:block;font-family:var(--disp);font-weight:400;font-size:1.6rem;margin:6px 0}
+.pg p{font-size:.92rem;opacity:.75}
+
+/* visit */
+.visit{background:var(--ink);color:var(--bone);padding:110px 0 0;position:relative;overflow:hidden}
+.vg{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;padding-left:34px}
+.visit h2 em{color:var(--brass-l)}.visit .lab{color:var(--brass-l)}
+.info{margin-top:28px}
+.info div{padding:16px 0;border-top:1px solid rgba(246,242,234,.18)}
+.info div:last-child{border-bottom:1px solid rgba(246,242,234,.18)}
+.info small{display:block;font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--brass-l);margin-bottom:3px;font-weight:500}
+.nl{display:flex;margin-top:26px;border:1px solid rgba(246,242,234,.4)}
+.nl input{flex:1;background:none;border:0;padding:1em 1.2em;color:var(--bone);font:inherit;min-width:0}
+.nl input::placeholder{color:rgba(246,242,234,.5)}
+.nl button{padding:0 1.6em;background:var(--brass);color:var(--ink);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+.vimg{aspect-ratio:4/5;max-width:420px;margin-left:auto;overflow:hidden}
+.vimg img{width:100%;height:100%;object-fit:cover}
+.big{font-family:var(--disp);font-size:clamp(4.5rem,19vw,17rem);line-height:.8;text-align:center;white-space:nowrap;margin-top:70px;margin-bottom:-.12em;color:transparent;-webkit-text-stroke:1px rgba(246,242,234,.2);letter-spacing:.06em;user-select:none;pointer-events:none}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:20px 0 96px;font-size:.74rem;opacity:.6;position:relative}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);z-index:150;background:#fff;color:var(--ink);padding:.9em 1.4em;box-shadow:0 20px 50px -10px rgba(0,0,0,.5);font-size:.88rem;max-width:min(92vw,380px);text-align:center;opacity:0;pointer-events:none;transition:.5s var(--ease)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.mcta{position:fixed;inset:auto 12px 12px 12px;z-index:60;display:none;gap:10px;padding:8px;background:rgba(13,20,31,.95);backdrop-filter:blur(12px);box-shadow:0 10px 40px -8px #000}
+.mcta a{flex:1;text-align:center;padding:.85em 1em;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.3);font-weight:500}
+.mcta a.p{background:var(--brass);border-color:var(--brass);color:var(--ink)}
+
+@media(max-width:1000px){
+  .side{display:none}
+  nav .wrap,.hero .wrap,.wg,.fg,.vg,.eh{padding-left:0}
+  nav ul{display:none}
+  .rail{padding-left:24px}
+  .hero{padding-top:92px}
+  .hero .wrap,.wg,.fg,.vg{grid-template-columns:1fr;gap:44px}
+  .hero .wrap{min-height:0}
+  .hph{max-width:460px;margin:0 auto;width:100%}
+  .sec{padding:76px 0}
+  .wph{max-width:460px;margin:0 auto;width:100%;order:-1}
+  .dg{grid-template-columns:1fr 1fr}.dg figure:nth-child(even){margin-top:0}
+  .pg{grid-template-columns:1fr 1fr}.pg div{padding:24px 16px 10px;border-bottom:1px solid rgba(246,242,234,.14)}.pg div:nth-child(odd){padding-left:0}.pg div:nth-child(2){border-right:0}
+  .vimg{margin:0 auto}
+  .mcta{display:flex}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01s!important}
+  .rv{opacity:1;transform:none}.lt .tp{clip-path:none}.lt h1{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<div id="loader" aria-hidden="true"><div class="lt"><div class="tp"></div><h1>Mensora</h1></div><button id="skip" type="button">Skip</button></div>
+
+<div class="side" id="side" aria-hidden="true"><div class="rule"></div><div class="mk" id="mk"><i></i><span id="mkt">0 cm</span></div></div>
+
+<nav id="nav"><div class="wrap">
+  <a class="logo" href="#top">Mensora</a>
+  <ul><li><a href="#wardrobe">Wardrobe</a></li><li><a href="#edit">The edit</a></li><li><a href="#fit">Fit finder</a></li><li><a href="#visit">Visit</a></li></ul>
+  <button class="bag" id="bag" type="button">Bag <b id="bagn">0</b></button>
+</div></nav>
+
+<header class="hero" id="top" data-name="Welcome">
+  <div class="wrap">
+    <div>
+      <p class="lab">Tailoring · Linen · Outerwear · Est. concept</p>
+      <h1 style="margin-top:20px">Cut for the<br>way you <em>move.</em></h1>
+      <p class="sub">Suits, shirts and coats made with a quiet kind of precision. Pick a look for the week ahead, find your size, and book a fitting.</p>
+      <div class="row"><a class="btn btn-d" href="#wardrobe">Build your look</a><a class="btn btn-o" href="#fit">Find my size</a></div>
+      <div class="meta"><div><b>7 days</b>Free alterations</div><div><b>XS–XXL</b>Sizes, plus made-to-measure</div><div><b>48 hrs</b>Delhi delivery</div></div>
+    </div>
+    <div class="hph">
+      <div class="a"><img src="img/suit-blue.jpg" alt="Man in a navy two-piece suit and white shirt, hand in jacket"></div>
+      <div class="b"><img src="img/watch-tie.jpg" alt="Wrist watch and tie detail on a dark suit"></div>
+      <div class="tag">Autumn · Winter</div>
+    </div>
+  </div>
+</header>
+
+<div class="mq" aria-hidden="true"><div><span>Two-piece suits</span><i>✦</i><span>Linen shirts</span><i>✦</i><span>Overcoats</span><i>✦</i><span>Tuxedos</span><i>✦</i><span>Knitwear</span><i>✦</i><span>Made to measure</span><i>✦</i><span>Two-piece suits</span><i>✦</i><span>Linen shirts</span><i>✦</i><span>Overcoats</span><i>✦</i><span>Tuxedos</span><i>✦</i><span>Knitwear</span><i>✦</i><span>Made to measure</span><i>✦</i></div></div>
+
+<section class="sec ward" id="wardrobe" data-o="0" data-name="Wardrobe">
+  <div class="wrap">
+    <div class="rv" style="padding-left:34px"><p class="lab"><b>01</b>The wardrobe</p><h2 style="margin-top:12px">Dress for the week,<br><em>not the hanger.</em></h2></div>
+    <div class="wg rv">
+      <div class="wcopy">
+        <div class="tabs" id="tabs" role="group" aria-label="Occasion"></div>
+        <h3 id="wt"></h3>
+        <p id="wp"></p>
+        <ul class="pcs" id="pcs"></ul>
+        <div class="tot"><span>Your look</span><b id="tot"></b></div>
+        <div class="wrow"><button class="btn btn-b" id="addall" type="button">Add look to bag</button><button class="btn btn-o" id="fitbtn" type="button">Book a fitting</button></div>
+        <p class="note">Concept brand. Pieces and prices are samples.</p>
+      </div>
+      <div class="wph" id="wph">
+        <div class="im">
+          <img src="img/suit-case.jpg" alt="Man in a blue suit carrying a leather case" class="on" style="object-position:50% 20%">
+          <img src="img/tux.jpg" alt="Black and white photo of a tuxedo with bow tie" style="object-position:50% 20%">
+          <img src="img/coat.jpg" alt="Man in a camel overcoat and turtleneck" style="object-position:50% 25%">
+        </div>
+        <div class="sm" id="wsm">
+          <img src="img/suit-black.jpg" alt="" class="on"><img src="img/mannequin.jpg" alt=""><img src="img/shirt-cream.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec edit" id="edit" data-name="The edit">
+  <div class="wrap eh rv"><div><p class="lab"><b>02</b>The edit</p><h2 style="margin-top:12px">Pieces you'll<br><em>reach for.</em></h2></div><p>Linen, denim and wool for the in-between days. Tap "Add to bag" on any piece.</p></div>
+  <div class="rail rv" id="rail"></div>
+</section>
+
+<section class="sec fit" id="fit" data-name="Fit finder">
+  <div class="wrap fg">
+    <div class="rv">
+      <p class="lab"><b>03</b>Fit finder</p>
+      <h2 style="margin-top:12px">Your size in<br><em>ten seconds.</em></h2>
+      <div class="sl"><label>Height <b id="hv">175 cm</b></label><input type="range" id="h" min="150" max="205" value="175" aria-label="Height"></div>
+      <div class="sl"><label>Weight <b id="wv">74 kg</b></label><input type="range" id="w" min="48" max="130" value="74" aria-label="Weight"></div>
+      <div class="sl"><label>Fit</label><div class="chips" id="fits"></div></div>
+    </div>
+    <div class="res rv">
+      <small>We suggest</small>
+      <div class="sz" id="sz">M</div>
+      <div class="bar" id="bar"></div>
+      <p id="sp"></p>
+      <button class="btn btn-b" id="szbtn" type="button">Shop this size</button>
+    </div>
+  </div>
+</section>
+
+<section class="sec det" id="details" data-name="Details">
+  <div class="wrap rv" style="padding-left:34px">
+    <p class="lab"><b>04</b>Details</p><h2 style="margin-top:12px">It's in the <em>small things.</em></h2>
+    <div class="dg">
+      <figure><img src="img/pocket.jpg" alt="Teal blazer with a patterned pocket square" style="object-position:50% 40%"><figcaption>The pocket</figcaption></figure>
+      <figure><img src="img/cuff.jpg" alt="Hands buttoning a navy jacket, watch on the wrist" style="object-position:50% 30%"><figcaption>The cuff</figcaption></figure>
+      <figure><img src="img/watch.jpg" alt="Blue-dial watch with a tan leather strap"><figcaption>The watch</figcaption></figure>
+      <figure><img src="img/flatlay.jpg" alt="Wallet, phone, watch, glasses and cologne laid out on a table"><figcaption>The carry</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec prom" id="promise" data-name="Our promise">
+  <div class="wrap rv" style="padding-left:34px">
+    <p class="lab"><b>05</b>The promise</p><h2 style="margin-top:12px">Made to <em>last</em>,<br>fitted to <em>you.</em></h2>
+    <div class="pg">
+      <div><span class="n">01</span><b>Fabric first</b><p>Wool, linen and cotton chosen for how they wear, not how they photograph.</p></div>
+      <div><span class="n">02</span><b>A cleaner cut</b><p>Shoulders that sit, sleeves that end where they should, trousers that hang.</p></div>
+      <div><span class="n">03</span><b>Fitted free</b><p>Seven days of alterations on every suit and jacket.</p></div>
+      <div><span class="n">04</span><b>Kept simple</b><p>A small range, restocked often, with fewer decisions to make.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="visit" id="visit" data-name="Visit">
+  <div class="wrap vg">
+    <div class="rv">
+      <p class="lab"><b>06</b>Visit</p>
+      <h2 style="margin-top:12px">Come in for<br>a <em>fitting.</em></h2>
+      <div class="info">
+        <div><small>Flagship (sample)</small><p>Mensora Atelier, Sample Market, New Delhi</p></div>
+        <div><small>Hours</small><p>Monday to Saturday, 11 AM to 8 PM</p></div>
+        <div><small>Book a fitting</small><p>WhatsApp or call, we reply the same day</p></div>
+      </div>
+      <form class="nl" id="nl"><input type="email" placeholder="Your email for new arrivals" aria-label="Email" required><button type="submit">Join</button></form>
+    </div>
+    <div class="rv"><div class="vimg"><img src="img/black-look.jpg" alt="Man in an all-black suit walking past a brick building" style="object-position:50% 20%"></div></div>
+  </div>
+  <div class="big" aria-hidden="true">Mensora</div>
+  <div class="wrap foot"><span>© Mensora (a fictional brand, for demonstration)</span><span>Photography: Unsplash contributors (sample images)</span></div>
+</section>
+
+<div class="mcta"><a href="#wardrobe">Build a look</a><a class="p" href="#fit">Find my size</a></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),3200)};
+const inr=n=>'₹'+n.toLocaleString('en-IN');
+
+/* loader */
+const L=$('#loader');function hideL(){L.classList.add('off');try{sessionStorage.setItem('ms','1')}catch(e){}}
+let seen=false;try{seen=sessionStorage.getItem('ms')==='1'}catch(e){}
+if(seen)L.classList.add('off');else{setTimeout(hideL,2600);$('#skip').onclick=hideL}
+
+const nav=$('#nav');
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+
+/* side tape measures you as you scroll */
+const mk=$('#mk'),mkt=$('#mkt'),secs=[...document.querySelectorAll('[data-name]')];
+function tape(){const max=document.documentElement.scrollHeight-innerHeight,p=max>0?scrollY/max:0;mk.style.top=(p*100)+'%';
+  let name='';secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.45)name=s.dataset.name});
+  mkt.textContent=Math.round(p*190)+' cm · '+name;nav.classList.toggle('s',scrollY>40)}
+addEventListener('scroll',tape,{passive:true});addEventListener('resize',tape);tape();
+
+/* bag */
+let bag=0;const bagn=$('#bagn');function addBag(n,msg){bag+=n;bagn.textContent=bag;toast(msg||'Added to bag')}
+$('#bag').onclick=()=>toast(bag?bag+' item'+(bag>1?'s':'')+' in your bag (demo checkout)':'Your bag is empty');
+
+/* wardrobe */
+const O=[
+ {k:'Office',t:'Monday to Friday',p:'A navy two-piece, a crisp shirt and a belt that does the job. Built to look sharp at 9 AM and at 9 PM.',main:0,sm:0,items:[['Navy two-piece suit','Wool blend, half-canvas',18900],['Oxford shirt','Easy-iron cotton',2900],['Leather belt','Full grain, brass buckle',1800]]},
+ {k:'Evening',t:'Weddings and dinners',p:'A black shawl-collar tuxedo with a poplin shirt and a silk bow tie. Nothing else needed.',main:1,sm:1,items:[['Shawl-collar tuxedo','Wool and mohair',26500],['Poplin dress shirt','Hidden placket',3400],['Silk bow tie','Hand-finished',1500]]},
+ {k:'Weekend',t:'Off duty, still sorted',p:'A camel overcoat over a soft linen shirt. For long lunches and cooler evenings.',main:2,sm:2,items:[['Camel overcoat','Wool, unlined',14900],['Linen band-collar shirt','Washed, relaxed',3200],['Tailored chinos','Stretch cotton',3600]]}
+];
+const W=$('.ward'),imgsM=[...document.querySelectorAll('#wph .im img')],imgsS=[...document.querySelectorAll('#wsm img')];
+let oc=0,chk=[[1,1,1],[1,1,1],[1,1,1]];
+O.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.textContent=o.k;b.setAttribute('aria-pressed',i===0);b.onclick=()=>{clearInterval(auto);setO(i)};$('#tabs').appendChild(b)});
+function setO(i){oc=i;const o=O[i];W.dataset.o=i;[...$('#tabs').children].forEach((b,j)=>b.setAttribute('aria-pressed',j===i));
+  $('#wt').textContent=o.t;$('#wp').textContent=o.p;imgsM.forEach((m,j)=>m.classList.toggle('on',j===o.main));imgsS.forEach((m,j)=>m.classList.toggle('on',j===o.sm));
+  $('#pcs').innerHTML='';o.items.forEach((it,j)=>{const li=document.createElement('li');li.innerHTML=`<input type="checkbox" ${chk[i][j]?'checked':''} aria-label="${it[0]}"><div><b>${it[0]}</b><small>${it[1]}</small></div><span class="pr">${inr(it[2])}</span>`;
+    const c=li.querySelector('input');c.onchange=()=>{chk[i][j]=c.checked?1:0;total()};li.onclick=e=>{if(e.target!==c){c.checked=!c.checked;c.onchange()}};$('#pcs').appendChild(li)});total()}
+function total(){const o=O[oc];$('#tot').textContent=inr(o.items.reduce((s,it,j)=>s+(chk[oc][j]?it[2]:0),0))}
+$('#addall').onclick=()=>{const n=chk[oc].reduce((a,b)=>a+b,0);if(!n)return toast('Select at least one piece');addBag(n,n+' piece'+(n>1?'s':'')+' added to bag')};
+$('#fitbtn').onclick=()=>toast('Demo: this would open WhatsApp to book a fitting');
+setO(0);let auto=setInterval(()=>setO((oc+1)%3),7000);
+
+/* edit rail */
+const P=[['tee-navy','Linen henley, navy','Relaxed fit',3400,['S','M','L','XL']],['tee-grey','Linen henley, stone','Relaxed fit',3400,['S','M','L','XL']],['denim-shirt','Washed denim shirt','Regular fit',3900,['M','L','XL']],['striped','Striped overshirt','Relaxed fit',4200,['S','M','L']],['shirt-cream','Band-collar shirt','Slim fit',3200,['S','M','L','XL']],['coat','Camel overcoat','Tailored fit',14900,['M','L','XL']]];
+P.forEach(p=>{const d=document.createElement('article');d.className='pc';d.innerHTML=`<div class="im"><img src="img/${p[0]}.jpg" alt="${p[1]}" loading="lazy" style="object-position:50% 30%"><button class="q" type="button">Add to bag</button></div><h3>${p[1]}</h3><p><span>${p[2]}</span><b>${inr(p[3])}</b></p><div class="sz">${p[4].map(s=>`<span>${s}</span>`).join('')}</div>`;
+  d.querySelector('.q').onclick=()=>addBag(1,p[1]+' added to bag');$('#rail').appendChild(d)});
+
+/* fit finder */
+const SZ=['S','M','L','XL','XXL'],FITS=['Slim','Regular','Relaxed'];let ft=1;
+FITS.forEach((f,i)=>{const b=document.createElement('button');b.type='button';b.textContent=f;b.setAttribute('aria-pressed',i===ft);b.onclick=()=>{ft=i;fitUpd()};$('#fits').appendChild(b)});
+$('#bar').innerHTML=SZ.map(s=>`<i>${s}</i>`).join('');
+function fitUpd(){const h=+$('#h').value,w=+$('#w').value;$('#hv').textContent=h+' cm';$('#wv').textContent=w+' kg';
+  const bmi=w/((h/100)**2);let s=bmi<19.5?0:bmi<23?1:bmi<26.5?2:bmi<30?3:4;if(h>190)s++;if(h<165)s--;s+=ft-1;s=Math.max(0,Math.min(4,s));
+  $('#sz').textContent=SZ[s];[...$('#bar').children].forEach((e,i)=>e.classList.toggle('on',i===s));[...$('#fits').children].forEach((b,i)=>b.setAttribute('aria-pressed',i===ft));
+  $('#sp').textContent=`For ${h} cm and ${w} kg in a ${FITS[ft].toLowerCase()} fit. Sample guide: between sizes, size up for a relaxed fit.`}
+$('#h').oninput=fitUpd;$('#w').oninput=fitUpd;fitUpd();
+$('#szbtn').onclick=()=>{location.hash='#edit';toast('Showing the edit in size '+$('#sz').textContent)};
+$('#nl').onsubmit=e=>{e.preventDefault();e.target.reset();toast('Thanks. This is a demo, so nothing was sent.')};
+</script>
+</body>
+</html>
