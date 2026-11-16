@@ -402,7 +402,7 @@ const SZ=['S','M','L','XL','XXL'],FITS=['Slim','Regular','Relaxed'];let ft=1;
 FITS.forEach((f,i)=>{const b=document.createElement('button');b.type='button';b.textContent=f;b.setAttribute('aria-pressed',i===ft);b.onclick=()=>{ft=i;fitUpd()};$('#fits').appendChild(b)});
 $('#bar').innerHTML=SZ.map(s=>`<i>${s}</i>`).join('');
 function fitUpd(){const h=+$('#h').value,w=+$('#w').value;$('#hv').textContent=h+' cm';$('#wv').textContent=w+' kg';
-  const bmi=w/((h/100)**2);let s=bmi<19.5?0:bmi<23?1:bmi<26.5?2:bmi<30?3:4;if(h>190)s++;if(h<165)s--;s+=ft-1;s=Math.max(0,Math.min(4,s));
+  const bmi=w/((h/100)**2);let s=bmi<20?0:bmi<24.8?1:bmi<28?2:bmi<31.5?3:4;if(h>190)s++;if(h<165)s--;s+=ft-1;s=Math.max(0,Math.min(4,s));
   $('#sz').textContent=SZ[s];[...$('#bar').children].forEach((e,i)=>e.classList.toggle('on',i===s));[...$('#fits').children].forEach((b,i)=>b.setAttribute('aria-pressed',i===ft));
   $('#sp').textContent=`For ${h} cm and ${w} kg in a ${FITS[ft].toLowerCase()} fit. Sample guide: between sizes, size up for a relaxed fit.`}
 $('#h').oninput=fitUpd;$('#w').oninput=fitUpd;fitUpd();
